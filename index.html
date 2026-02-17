@@ -1,15 +1,52 @@
-<script>
-  // این کد محتوای آدرس مقصد را جایگزین محتوای فعلی می‌کند
-  fetch('https://webmail.mypdexp.ir' + location.pathname)
-    .then(response => {
-      if (response.ok) return response.text();
-      throw new Error('ارتباط برقرار نشد');
-    })
-    .then(data => {
-      document.open();
-      document.write(data);
-      document.close();
-    })
-    .catch(err => console.error('خطا در بارگذاری:', err));
-</script>
-<h1>در حال انتقال...</h1>
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>در حال انتقال...</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Tahoma, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .loader {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="loader">
+        <h1>در حال بارگذاری محتوا...</h1>
+        <p>لطفاً شکیبا باشید.</p>
+    </div>
+
+    <script>
+        // آدرس ورکر شما
+        const workerUrl = 'https://mail.b200020000.workers.dev';
+
+        fetch(workerUrl + location.pathname + location.search)
+            .then(response => {
+                if (response.ok) return response.text();
+                throw new Error('عدم دسترسی به سرور مقصد (CORS یا فیلترینگ)');
+            })
+            .then(data => {
+                // جایگزینی کامل محتوای ورکر در صفحه فعلی
+                document.open();
+                document.write(data);
+                document.close();
+            })
+            .catch(err => {
+                console.error('خطا:', err);
+                document.querySelector('.loader').innerHTML = 
+                    '<h1>خطا در برقراری ارتباط</h1>' +
+                    '<p>مطمئن شوید که ورکر شما هدرهای CORS را ارسال می‌کند یا از آی‌پی تمیز استفاده کنید.</p>';
+            });
+    </script>
+</body>
+</html>
