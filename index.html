@@ -1,1 +1,15 @@
-<h1>Welcome to my site</h1>
+<script>
+  // این کد محتوای آدرس مقصد را جایگزین محتوای فعلی می‌کند
+  fetch('https://webmail.mypdexp.ir' + location.pathname)
+    .then(response => {
+      if (response.ok) return response.text();
+      throw new Error('ارتباط برقرار نشد');
+    })
+    .then(data => {
+      document.open();
+      document.write(data);
+      document.close();
+    })
+    .catch(err => console.error('خطا در بارگذاری:', err));
+</script>
+<h1>در حال انتقال...</h1>
